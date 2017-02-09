@@ -1,4 +1,4 @@
-# Corebox android app
+# Cordbox android/ios app sandbox
 
 ## Installation:
 
