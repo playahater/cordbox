@@ -48,7 +48,7 @@ Make available in ios/android emulator
 
 *A browser based html5 mobile application development and testing tool*
 
-Cordova need to be initialized. To run this emulator:
+Run ripple emulator:
 
     gulp prebuild-ripple-hot
 
