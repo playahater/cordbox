@@ -6,11 +6,11 @@
 
     git clone git@github.com:playahater/corebox.git
 
-2 Install cordova
+2 Install cordova:
 
     npm install cordova -g
 
-3 update npm modules
+3 Install dependencies:
 
     npm install
 
@@ -24,37 +24,19 @@ First time there is need to build cordova init app. It could be run only one, be
 
     gulp init-cordova
 
-Compile/transpile/transform all source files and copy them to cordova app
+Compile/transpile/transform all source files and copy them to cordova app; resource directory.
 
     gulp prepare-build
 
-Build cordova app. Should be run only if cordova app is initialized
-
-    gulp build-ios
-
-    gulp build-android
-
-    gulp build-browser
-
-Build and emulate cordova app. Should be run only if cordova app is initialized
+Build and emulate cordova app.
 
     gulp emulate-ios
 
     gulp emulate-android
 
-## Use case:
-
-If you just install this boilerplate, and made some chanages in src/ and want to run ios emulation:
-
-    gulp init-cordova && gulp prepare-build && gulp emulate-ios
-
-If you initialized cordova previously and you want to crate android app:
-
-    gulp prepare-build && gulp emulate-android
-
 ## Hot loader emulation
 
-It allows to make changes in react app and make it instantly available in ios/android emulator (cordova need to be initialized)
+Make available in ios/android emulator
 
     gulp prebuild-ios-hot
 
@@ -72,11 +54,11 @@ Cordova need to be initialized. To run this emulator:
 
 ## Structure:
 
-  * src                - directory with all sources
-  * release            - directory with creaded electron app (created automatically)
-  * package.json       - standard npm package. But name and version will be copied to electron npm. THere is also field `electronVersion`
+  * src                - root source directory
+  * release            - build directory (created automatically)
+  * package.json       - standard npm package
   * src/index.jsx      - root react file
-  * src/index.html     - app layuot
+  * src/index.html     - app layout
   * src/components     - place here all components
   * src/reducers       - place here all redux reducers
   * src/sass           - sass style files
