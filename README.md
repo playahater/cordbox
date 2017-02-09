@@ -40,14 +40,6 @@ Make available in ios/android emulator
 
     gulp prebuild-browser-hot
 
-## Ripple emulation with hot loader
-
-*A browser based html5 mobile application development and testing tool*
-
-Run ripple emulator:
-
-    gulp prebuild-ripple-hot
-
 ## Structure:
 
   * src                - root source directory

@@ -25,6 +25,7 @@ var webpackOptionsLoader = {
   include: path.join(__dirname, 'src'),
   exclude: /node_modules/
 };
+
 var webpackOptions = {
   module: {
     loaders: [
@@ -210,11 +211,6 @@ gulp.task('emulate-ios', shell.task('cd release && cordova emulate ios'));
 gulp.task('emulate-android', shell.task('cd release && cordova emulate android'));
 
 /**
- * Run ripple emulation
- */
-gulp.task('emulate-ripple', shell.task('cd release && ../node_modules/.bin/ripple emulate'));
-
-/**
  * Run app in browser - this also build app
  */
 gulp.task('run-browser', shell.task('cd release && cordova run browser'));
@@ -252,11 +248,4 @@ gulp.task('prebuild-android-hot', function(done) {
  */
 gulp.task('prebuild-browser-hot', function(done) {
   runSequence('clear-cordova-www', 'copy-layout-hot', 'compile-react-hot', 'run-browser', done);
-});
-
-/**
- * Emulate app by ripple and hot loader
- */
-gulp.task('prebuild-ripple-hot', function(done) {
-  runSequence('clear-cordova-www', 'copy-layout-hot', 'compile-react-hot', 'emulate-ripple', done);
 });
