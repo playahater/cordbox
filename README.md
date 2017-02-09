@@ -2,15 +2,11 @@
 
 ## Installation:
 
-1 Clone this repository to new empty dir:
-
-    git clone git@github.com:playahater/corebox.git
-
-2 Install cordova:
+1 cordova:
 
     npm install cordova -g
 
-3 Install dependencies:
+2 dependencies:
 
     npm install
 
