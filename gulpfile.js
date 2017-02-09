@@ -20,128 +20,117 @@ const APP_ID = packageJson.id;
 const APP_VERSION = packageJson.version;
 
 var webpackOptionsLoader = {
-  test: /.jsx?$/,
-  loaders: ['babel?presets[]=react,presets[]=es2015,presets[]=stage-0'],
-  include: path.join(__dirname, 'src'),
-  exclude: /node_modules/
+    test: /.jsx?$/,
+    include: path.join(__dirname, 'src'),
+    exclude: /node_modules/,
+    loader: 'babel-loader',
+    query: {
+        presets: ['react', 'es2015', 'stage-0']
+    }
 };
 
 var webpackOptions = {
-  module: {
-    loaders: [
-      webpackOptionsLoader,
-      {
-        test: /\.scss$/,
-        loaders: ['style', 'css', 'sass']
-      },
-      {
-        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-        loader: 'url-loader?limit=100000'
-      },
-      {
-        test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        loader: 'eslint-loader'
-      }
-    ]
-  },
-  entry: [
-    './src/index.jsx'
-  ],
-  output: {
-    path: path.join(__dirname, './release/www/' + STATIC_PATH + '/'),
-    filename: BUNDLE_FILE
-  },
-  sassLoader: {
-    includePaths: [
-      path.resolve(__dirname, './node_modules/bootstrap-sass/assets/stylesheets/'),
-      path.resolve(__dirname, './node_modules/compass-mixins/lib/')
-    ]
-  },
-  eslint: {
-
-  },
-  debug: true,
-  progress: false,
-  emitError: true,
-  emitWarning: true,
-  failOnError: true,
-  stats: {
-    colors: true,
-    reasons: true
-  },
-  devtool: 'source-map'
+    module: {
+        loaders: [
+            webpackOptionsLoader,
+            {
+                test: /\.scss$/,
+                loaders: ['style', 'css', 'sass']
+            },
+            {
+                test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+                loader: 'url-loader?limit=100000'
+            },
+            {
+                test: /\.(js|jsx)$/,
+                exclude: /node_modules/,
+                loader: 'eslint-loader'
+            }
+        ]
+    },
+    entry: [
+        './src/app.jsx'
+    ],
+    output: {
+        path: path.join(__dirname, './release/www/' + STATIC_PATH + '/'),
+        filename: BUNDLE_FILE
+    },
+    stats: {
+        colors: true,
+        reasons: true
+    },
+    devtool: 'source-map'
 };
 
 /**
  * remove release directory, which allow to install new cordova project
  */
 gulp.task('clear-release', function () {
-  return gulp.src('release', {read: false})
-    .pipe(clean());
+    return gulp.src('release', {read: false})
+        .pipe(clean());
 });
 
 /**
  * copy non bundled files from src to dist directory
  */
 gulp.task('copy-layout', function() {
-  return gulp.src(['./src/index.html'])
-    .pipe(preprocess({
-      context: {
-        BUNDLE_PATH: './' + STATIC_PATH + '/' + BUNDLE_FILE,
-        APP_NAME: APP_NAME
-      }
-    }))
-    .pipe(gulp.dest('./release/www'))
+    return gulp.src(['./src/index.html'])
+        .pipe(preprocess({
+            context: {
+                BUNDLE_PATH: './' + STATIC_PATH + '/' + BUNDLE_FILE,
+                APP_NAME: APP_NAME
+            }
+        }))
+        .pipe(gulp.dest('./release/www'))
 });
 
 /**
  * copy non bundled files from src to dist directory with path to hot loader server
  */
 gulp.task('copy-layout-hot', function() {
-  return gulp.src(['./src/index.html'])
-    .pipe(preprocess({
-      context: {
-        BUNDLE_PATH: WEBPACK_SERVER_HOST + ':' + WEBPACK_SERVER_PORT +'/' + STATIC_PATH + '/' + BUNDLE_FILE,
-        APP_NAME: APP_NAME
-      }
-    }))
-    .pipe(gulp.dest('./release/www'))
+    return gulp.src(['./src/index.html'])
+        .pipe(preprocess({
+            context: {
+                BUNDLE_PATH: WEBPACK_SERVER_HOST + ':' + WEBPACK_SERVER_PORT +'/' + STATIC_PATH + '/' + BUNDLE_FILE,
+                APP_NAME: APP_NAME
+            }
+        }))
+        .pipe(gulp.dest('./release/www'))
 });
 
 /**
  * Compile react jsx ES6 & ES7 to ES5 js
  */
 gulp.task('compile-react', function(done) {
-  webpack(webpackOptions, function(err, stats) {
-    if(err) console.log(err);
-    gutil.log("[webpack]", stats.toString({}));
-    done();
-  });
+    webpack(webpackOptions, function(err, stats) {
+        if(err) console.log(err);
+        gutil.log("[webpack]", stats.toString({}));
+        done();
+    });
 });
 
 /**
  * Compile react jsx ES6 & ES7 to ES5 js and run webpack hot loader server
  */
 gulp.task('compile-react-hot', function(done) {
-  webpackOptions.entry = [
-    'webpack-dev-server/client?' + WEBPACK_SERVER_HOST + ':' + WEBPACK_SERVER_PORT,
-    'webpack/hot/only-dev-server'
-  ].concat(webpackOptions.entry);
-  webpackOptions.plugins = [
-    new webpack.HotModuleReplacementPlugin({})
-  ];
-  webpackOptionsLoader.loaders.unshift('react-hot');
-  webpackOptions.output.publicPath = WEBPACK_SERVER_HOST + ':' + WEBPACK_SERVER_PORT + '/' + STATIC_PATH + '/';
+    webpackOptions.entry = [
+        'webpack-dev-server/client?' + WEBPACK_SERVER_HOST + ':' + WEBPACK_SERVER_PORT,
+        'webpack/hot/only-dev-server'
+    ].concat(webpackOptions.entry);
+    webpackOptions.plugins = [
+        new webpack.HotModuleReplacementPlugin({})
+    ];
+    webpackOptionsLoader.loaders.unshift('react-hot');
+    webpackOptions.output.publicPath = WEBPACK_SERVER_HOST + ':' + WEBPACK_SERVER_PORT + '/' + STATIC_PATH + '/';
 
-  new WebpackDevServer(webpack(webpackOptions), {
-    hot: true,
-    publicPath: '/' + STATIC_PATH + '/'
-  }).listen(WEBPACK_SERVER_PORT, WEBPACK_NETWORK_IP, function(err) {
-    if(err) console.log(err);
-    done();
-    console.log('webpack dev server listening at ' + WEBPACK_SERVER_HOST + ':' + WEBPACK_SERVER_PORT);
-  });
+    new WebpackDevServer(webpack(webpackOptions), {
+        hot: true,
+        publicPath: '/' + STATIC_PATH + '/'
+    }).listen(WEBPACK_SERVER_PORT, WEBPACK_NETWORK_IP, function(err) {
+        if(err) console.log(err);
+        done();
+        console.log('webpack dev server listening at ' + WEBPACK_SERVER_HOST + ':' + WEBPACK_SERVER_PORT);
+    });
 });
 
 /**
@@ -172,8 +161,8 @@ gulp.task('platform-browser', shell.task('cd release && cordova platform add bro
  * Clear previous html code from release/www
  */
 gulp.task('clear-cordova-www', function () {
-  return gulp.src('release/www', {read: false})
-    .pipe(clean());
+    return gulp.src('release/www', {read: false})
+        .pipe(clean());
 });
 
 /**
@@ -219,33 +208,33 @@ gulp.task('run-browser', shell.task('cd release && cordova run browser'));
  * Higher level task, should be run once for create cordova project (it could be run more times but it is time consuming)
  */
 gulp.task('init-cordova', function(done) {
-  runSequence('create-cordova', 'platform-ios', 'platform-android', 'platform-browser', done);
+    runSequence('create-cordova', 'platform-ios', 'platform-android', 'platform-browser', done);
 });
 
 /**
  * Fill cordova project with proper html, js, css
  */
 gulp.task('prepare-build', function(done) {
-  runSequence('clear-cordova-www', 'copy-layout', 'compile-react', done);
+    runSequence('clear-cordova-www', 'copy-layout', 'compile-react', done);
 });
 
 /**
  * Emulate ios app with hot loader
  */
 gulp.task('prebuild-ios-hot', function(done) {
-  runSequence('clear-cordova-www', 'copy-layout-hot', 'compile-react-hot', 'emulate-ios', done);
+    runSequence('clear-cordova-www', 'copy-layout-hot', 'compile-react-hot', 'emulate-ios', done);
 });
 
 /**
  * Emulate android app with hot loader
  */
 gulp.task('prebuild-android-hot', function(done) {
-  runSequence('clear-cordova-www', 'copy-layout-hot', 'compile-react-hot', 'emulate-android', done);
+    runSequence('clear-cordova-www', 'copy-layout-hot', 'compile-react-hot', 'emulate-android', done);
 });
 
 /**
  * Emulate browser app with hot loader
  */
 gulp.task('prebuild-browser-hot', function(done) {
-  runSequence('clear-cordova-www', 'copy-layout-hot', 'compile-react-hot', 'run-browser', done);
+    runSequence('clear-cordova-www', 'copy-layout-hot', 'compile-react-hot', 'run-browser', done);
 });
