@@ -59,8 +59,8 @@ Cordova need to be initialized. To run this emulator:
   * package.json       - standard npm package
   * src/index.jsx      - root react file
   * src/index.html     - app layout
-  * src/components     - place here all components
-  * src/reducers       - place here all redux reducers
+  * src/components     - components
+  * src/reducers       - redux reducers
   * src/sass           - sass style files
 
 ## Technology:
