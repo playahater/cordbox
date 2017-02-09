@@ -18,7 +18,6 @@
     "quotes": [1, "single"],
     "no-multi-spaces": 1,
     "key-spacing": [0, {"align": "value"}],
-    "no-underscore-dangle": 0,
     "no-unused-vars": 0,
     "camelcase": 0,
     "no-underscore-dangle": 0

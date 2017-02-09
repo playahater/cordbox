@@ -34,9 +34,18 @@ var webpackOptions = {
         loaders: [
             webpackOptionsLoader,
             {
-                test: /\.scss$/,
-                loaders: ['style', 'css', 'sass']
-            },
+				test: /\.scss$/,
+				use: [{
+					loader: "style-loader"
+				}, {
+					loader: "css-loader"
+				}, {
+					loader: "sass-loader",
+					options: {
+						includePaths: [ __dirname, './node_modules/bootstrap-sass/assets/stylesheets/', __dirname, './node_modules/compass-mixins/lib/']
+					}
+				}]
+        	},
             {
                 test: /\.(png|woff|woff2|eot|ttf|svg)$/,
                 loader: 'url-loader?limit=100000'
@@ -103,7 +112,7 @@ gulp.task('copy-layout-hot', function() {
  */
 gulp.task('compile-react', function(done) {
     webpack(webpackOptions, function(err, stats) {
-        if(err) console.log(err);
+        if(err) throw new gutil.PluginError("webpack", err);
         gutil.log("[webpack]", stats.toString({}));
         done();
     });
@@ -127,7 +136,7 @@ gulp.task('compile-react-hot', function(done) {
         hot: true,
         publicPath: '/' + STATIC_PATH + '/'
     }).listen(WEBPACK_SERVER_PORT, WEBPACK_NETWORK_IP, function(err) {
-        if(err) console.log(err);
+        if(err) throw new gutil.PluginError("webpack-dev-server", err);
         done();
         console.log('webpack dev server listening at ' + WEBPACK_SERVER_HOST + ':' + WEBPACK_SERVER_PORT);
     });
