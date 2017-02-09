@@ -1,4 +1,4 @@
-# Cordbox android/ios app sandbox
+# Cordbox android/ios sandbox
 
 ## Installation:
 
