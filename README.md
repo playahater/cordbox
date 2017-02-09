@@ -2,11 +2,11 @@
 
 ## Installation:
 
-1 cordova:
+cordova:
 
     npm install cordova -g
 
-2 dependencies:
+dependencies:
 
     npm install
 
