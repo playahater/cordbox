@@ -214,6 +214,11 @@ gulp.task('emulate-android', shell.task('cd release && cordova emulate android')
 gulp.task('run-browser', shell.task('cd release && cordova run browser'));
 
 /**
+ * Install APK on device
+ */
+gulp.task('install-apk', shell.task('adb install -r release/platforms/android/build/outputs/apk/android-debug.apk'));
+
+/**
  * Higher level task, should be run once for create cordova project (it could be run more times but it is time consuming)
  */
 gulp.task('init-cordova', function(done) {
@@ -246,4 +251,18 @@ gulp.task('prebuild-android-hot', function(done) {
  */
 gulp.task('prebuild-browser-hot', function(done) {
     runSequence('clear-cordova-www', 'copy-layout-hot', 'compile-react-hot', 'run-browser', done);
+});
+
+/**
+ * Build and install APK on device 
+ */
+gulp.task('android', function(done) {
+    runSequence('prepare-build', 'build-android', 'install-apk', done);
+});
+
+/**
+ * Build ios package
+ */
+gulp.task('ios', function(done) {
+    runSequence('prepare-build', 'build-ios', done);
 });
