@@ -15,22 +15,18 @@ class Home extends React.Component {
           </RB.Navbar.Header>
           <RB.Navbar.Collapse>
             <RB.Nav>
-              <RB.NavItem eventKey={1} href="/">Home</RB.NavItem>
-              <RB.NavItem eventKey={2} href="/app">Contact</RB.NavItem>
+              <RB.NavItem eventKey={1} href="#">Home</RB.NavItem>
+              <RB.NavItem eventKey={2} href="#">Battery</RB.NavItem>
+              <RB.NavItem eventKey={2} href="#">Wireless</RB.NavItem>
             </RB.Nav>
           </RB.Navbar.Collapse>
         </RB.Navbar>
         <RB.PageHeader>
           <div className="container">
-            <h1>Foo's Bar</h1>
+            <h2>Welcome</h2>
           </div>
         </RB.PageHeader>
         <div className="container">
-          <RB.Jumbotron>
-            <h2>Server response</h2>
-            <p>this is some json response from the centauri rest api.</p>
-            <p><RB.Button bsStyle="primary">more</RB.Button></p>
-          </RB.Jumbotron>
         </div>
       </div>
     );
