@@ -1,4 +1,4 @@
-class EventListener {
+export default class EventListener {
 
   constructor(name, event) {
     this.name = name;
@@ -14,5 +14,3 @@ class EventListener {
   }
 
 }
-
-export default EventListener;
