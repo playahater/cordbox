@@ -1,4 +1,4 @@
-export default class EventListener {
+export default class Device {
 
   constructor(name, event) {
     this.name = name;

@@ -6,7 +6,7 @@ export default class Picker extends Component {
 
     return (
       <span>
-        <h1>{value}</h1>
+        <h3>{value}</h3>
         <select onChange={e => onChange(e.target.value)}
           value={value}>
           {options.map(option =>

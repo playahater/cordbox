@@ -58,10 +58,10 @@ class Home extends Component {
           }
         </p>
         {isFetching && posts.length === 0 &&
-            <h2>Loading...</h2>
+            <h3>Loading...</h3>
         }
         {!isFetching && posts.length === 0 &&
-            <h2>Empty.</h2>
+            <h3>Empty.</h3>
         }
         {posts.length > 0 &&
             <div style={{ opacity: isFetching ? 0.5 : 1 }}>
